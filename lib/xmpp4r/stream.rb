@@ -274,13 +274,19 @@ module Jabber
       Jabber::debuglog("TRYING message/iq/presence/cbs...")
       case stanza
       when Message
+      Jabber::debuglog("message case...")
         r = @messagecbs.process(stanza)
       when Iq
+      Jabber::debuglog("iq case...")
         r = @iqcbs.process(stanza)
       when Presence
+      Jabber::debuglog("presence case...")
         r = @presencecbs.process(stanza)
       end
+      Jabber::debuglog("synchronizing mutex...")
       @tbcbmutex.synchronize { @processing -= 1 }
+      Jabber::debuglog("finished synchro mutex...")
+
       return r
     end
 
